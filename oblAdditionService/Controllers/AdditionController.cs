@@ -31,15 +31,17 @@ namespace oblAdditionService.Controllers
 
             addDatabaseConnection.Execute("INSERT INTO Numbers (leftNumber, rightNumber) VALUES (@leftNum, @rightNum)", new { leftNum = leftNumber, rightNum = rightNumber });
 
-            var Numbersinserted = addDatabaseConnection.Query<string>("Select leftNumber, rightNumber from Numbers");
 
-            Console.WriteLine("values gotten from database: " + Numbersinserted);
-            foreach(var items in Numbersinserted)
+            var NumbersLeftinserted = addDatabaseConnection.Query<string>("Select leftNumber from Numbers");
+            var NumbersRightinserted = addDatabaseConnection.Query<string>("Select rightNumber from Numbers");
+            var leftList = NumbersLeftinserted.ToList();
+            var rightList = NumbersRightinserted.ToList();
+            for (int i = 0; i < leftList.Count(); i++)
             {
-                Console.WriteLine("Found number in database: " + items.ToString());
+                leftList[i] += " + " + rightList[i] + " = " + (Convert.ToInt32(leftList[i]) + Convert.ToInt32(rightList[i]));
             }
-            
-            return Numbersinserted;
+
+            return leftList;
         }
     }
 }
