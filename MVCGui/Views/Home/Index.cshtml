@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<main>
+    <h2>Calculator</h2>
+
+    <div>
+        @using (Html.BeginForm("Add", "Home", FormMethod.Post))
+        {
+            <div>
+                <input type="text" id="textBox1" name="leftNumber" />
+            </div>
+            <div>
+                <input type="text" id="textBox2" name="RightNumber" />
+            </div>
+            <input type="submit" value="Add" />
+        }
+    </div>
+
+    <div>
+        @using (Html.BeginForm("Subtract", "Home", FormMethod.Post))
+        {
+            <div>
+                <input type="text" id="textBox3" name="leftNumber" />
+            </div>
+            <div>
+                <input type="text" id="textBox4" name="RightNumber" />
+            </div>
+            <input type="submit" value="Subtract" />
+        }
+    </div>
+
+
+</main>

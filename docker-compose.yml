@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  mvcgui:
+    image: ${DOCKER_REGISTRY-}mvcgui
+    build:
+      context: .
+      dockerfile: MVCGui/Dockerfile
+    depends_on:
+        - additionService
+        - subtractionService
+  additionService:
+    image: ${DOCKER_REGISTRY-}additionservice
+    ports:
+    - "8090:80"
+    build:
+        context:  .
+        dockerfile: oblAdditionService/Dockerfile
+  subtractionService:
+    image: ${DOCKER_REGISTRY-}subtractionservice
+    ports:
+    - "8080:80"
+    build:
+        context:  .
+        dockerfile: oblSubtractionService/Dockerfile
