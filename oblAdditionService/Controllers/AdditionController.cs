@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using MySqlConnector;
 using Dapper;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace oblAdditionService.Controllers
 {
@@ -22,20 +23,18 @@ namespace oblAdditionService.Controllers
             Console.WriteLine("Got a request for :" + leftNumber);
 
             addDatabaseConnection.Open();
-            var tables = addDatabaseConnection.Query<string>("SHOW TABLES LIKE 'counters'");
-            /*String createTableQuery = "CREATE TABLE IF NOT EXISTS AddTable(" +
-                "leftNumber int not null," +
-                "rightNumber int not null)";*/
+            var tables = addDatabaseConnection.Query<string>("SHOW TABLES LIKE 'Numbers'");
+            if (!tables.Any())
+            {
+                addDatabaseConnection.Execute("CREATE TABLE Numbers (leftNumber int, rightNumber INT)");
+            }
 
-            Console.WriteLine(tables);
+            addDatabaseConnection.Execute("INSERT INTO Numbers (leftNumber, rightNumber) VALUES (@leftNum, @rightNum)", new { leftNum = leftNumber, rightNum = rightNumber });
+
+            var leftNumbersinserted = addDatabaseConnection.QueryFirstOrDefault<int>("Select LeftNumber from Numbers");
+
+            Console.WriteLine("values gotten from database: " + leftNumbersinserted);
             
-           // using MySqlCommand cmd = new MySqlCommand(createTableQuery, addDatabaseConnection);
-            //cmd.ExecuteNonQuery();
-
-            /*String insertQuery = "INSERT INTO AddTable(leftNumber, rightNumber) values (@leftNumber, @rightNumber)";
-            using MySqlCommand insertcmd = new MySqlCommand(insertQuery, connection);
-
-            Console.WriteLine(insertcmd.ExecuteNonQuery());*/
             return leftNumber + rightNumber;
         }
     }

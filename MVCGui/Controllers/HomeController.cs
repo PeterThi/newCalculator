@@ -11,10 +11,14 @@ namespace MVCGui.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            
         }
 
         public IActionResult Index()
         {
+            List<String> stringList = new List<string>();
+            stringList.Add("Future calculations shown here");
+            ViewBag.calculationList = stringList;
             return View();
         }
 
@@ -28,6 +32,10 @@ namespace MVCGui.Controllers
             Console.WriteLine("Added " + leftNumber + " + " + rightNumber);
             String result = response.Result.Content.ReadAsStringAsync().Result;
             Console.WriteLine(result + "RESULTED!!");
+            foreach(var item in result)
+            {
+                ViewBag.calculationList.Add(item);
+            }
 
             return View("Index");
         }
