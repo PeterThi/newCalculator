@@ -16,7 +16,7 @@ namespace oblAdditionService.Controllers
         public int Add(int leftNumber, int rightNumber)
         {
             Console.WriteLine("Got a request for :" + leftNumber);
-            return 13;
+            return leftNumber + rightNumber;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace oblSubtractionService.Controllers
         [HttpPost]
         public int PostSubtract(int leftNumber, int rightNumber)
         {
+            Console.WriteLine("Subtraction serviced recieved request!");
             return leftNumber - rightNumber;
 
         }

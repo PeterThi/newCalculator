@@ -30,5 +30,18 @@ namespace MVCGui.Controllers
             Console.WriteLine(result + "RESULTED!!");
             return View("Index");
         }
+
+        [HttpPost]
+        public IActionResult Subtract(int leftNumber, int rightNumber)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://SubtractionService/Subtraction");
+
+            var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber, null);
+            Console.WriteLine("Subtracted " + leftNumber + " - " + rightNumber);
+            String result = response.Result.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(result + "subtraction RESULTED!!");
+            return View("Index");
+        }
     }
 }
