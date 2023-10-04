@@ -28,6 +28,7 @@ namespace MVCGui.Controllers
             Console.WriteLine("Added " + leftNumber + " + " + rightNumber);
             String result = response.Result.Content.ReadAsStringAsync().Result;
             Console.WriteLine(result + "RESULTED!!");
+
             return View("Index");
         }
 

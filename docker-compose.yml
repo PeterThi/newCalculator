@@ -9,6 +9,7 @@ services:
     depends_on:
         - additionService
         - subtractionService
+        - additionDatabase
   additionService:
     image: ${DOCKER_REGISTRY-}additionservice
     ports:
@@ -16,6 +17,8 @@ services:
     build:
         context:  .
         dockerfile: oblAdditionService/Dockerfile
+    depends_on:
+        - additionDatabase
   subtractionService:
     image: ${DOCKER_REGISTRY-}subtractionservice
     ports:
@@ -23,3 +26,11 @@ services:
     build:
         context:  .
         dockerfile: oblSubtractionService/Dockerfile
+  additionDatabase:
+    image: "mysql"
+    environment: 
+      MYSQL_DATABASE: "add-database"
+      MYSQL_USER: "add-bruger"
+      MYSQL_PASSWORD: "C@ch3d1v2"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+       
