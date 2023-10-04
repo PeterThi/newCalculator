@@ -32,10 +32,8 @@ namespace MVCGui.Controllers
             Console.WriteLine("Added " + leftNumber + " + " + rightNumber);
             String result = response.Result.Content.ReadAsStringAsync().Result;
             Console.WriteLine(result + "RESULTED!!");
-            foreach(var item in result)
-            {
-                ViewBag.calculationList.Add(item);
-            }
+            List<string> stringList = new List<string>();
+            stringList.Add(result);
 
             return View("Index");
         }

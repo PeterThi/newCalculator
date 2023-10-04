@@ -18,7 +18,7 @@ namespace oblAdditionService.Controllers
         }
 
         [HttpPost]
-        public int Add(int leftNumber, int rightNumber)
+        public IEnumerable<string> Add(int leftNumber, int rightNumber)
         {
             Console.WriteLine("Got a request for :" + leftNumber);
 
@@ -26,16 +26,20 @@ namespace oblAdditionService.Controllers
             var tables = addDatabaseConnection.Query<string>("SHOW TABLES LIKE 'Numbers'");
             if (!tables.Any())
             {
-                addDatabaseConnection.Execute("CREATE TABLE Numbers (leftNumber int, rightNumber INT)");
+                addDatabaseConnection.Execute("CREATE TABLE Numbers (leftNumber int, rightNumber int)");
             }
 
             addDatabaseConnection.Execute("INSERT INTO Numbers (leftNumber, rightNumber) VALUES (@leftNum, @rightNum)", new { leftNum = leftNumber, rightNum = rightNumber });
 
-            var leftNumbersinserted = addDatabaseConnection.QueryFirstOrDefault<int>("Select LeftNumber from Numbers");
+            var Numbersinserted = addDatabaseConnection.Query<string>("Select leftNumber, rightNumber from Numbers");
 
-            Console.WriteLine("values gotten from database: " + leftNumbersinserted);
+            Console.WriteLine("values gotten from database: " + Numbersinserted);
+            foreach(var items in Numbersinserted)
+            {
+                Console.WriteLine("Found number in database: " + items.ToString());
+            }
             
-            return leftNumber + rightNumber;
+            return Numbersinserted;
         }
     }
 }
