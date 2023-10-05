@@ -36,7 +36,6 @@ namespace oblSubtractionService.Controllers
                     client.BaseAddress = new Uri("http://historyService/History");
 
                     var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber + "&isAddition=" + false + "&result=" + (leftNumber - rightNumber), null);
-                    Console.WriteLine("subtracted " + leftNumber + " - " + rightNumber);
                     result = response.Result.Content.ReadAsStringAsync().Result;
                 });
 

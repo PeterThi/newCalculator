@@ -26,7 +26,7 @@ namespace MVCGui.Controllers
         [HttpPost]
         public IActionResult Add(int leftNumber, int rightNumber)
         {
-
+            
             MonitoringService.Log.Information("started add process in HomeController with nums" + leftNumber + " + " + rightNumber);
 
                 
@@ -48,18 +48,17 @@ namespace MVCGui.Controllers
 
             policy.Execute(() =>
             {
+                using (var activity = MonitoringService.ActivitySource.StartActivity()) ;
                 var client = new HttpClient();
                 client.BaseAddress = new Uri("http://additionService/Addition");
 
                 var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber, null);
-                Console.WriteLine("Added " + leftNumber + " + " + rightNumber);
                 string result = response.Result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(result + "RESULTED!!");
+                
+                MonitoringService.Log.Information("Results from add in homecontroller: " + result);
 
 
-
-
-             if (!string.IsNullOrEmpty(result))
+                if (!string.IsNullOrEmpty(result))
                 {
                     List<string> stringList = result.Split(',').ToList();
                     for (int i = 0; i < stringList.Count; i++)
@@ -104,9 +103,7 @@ namespace MVCGui.Controllers
                 client.BaseAddress = new Uri("http://SubtractionService/Subtraction");
 
                 var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber, null);
-                Console.WriteLine("Subtracted " + leftNumber + " - " + rightNumber);
                 String result = response.Result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(result + "subtraction RESULTED!!");
 
 
                 List<string> stringList = result.Split(',').ToList();

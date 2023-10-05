@@ -5,31 +5,29 @@ using Serilog;
 using Serilog.Core;
 using System.Diagnostics;
 using System.Reflection;
-
 namespace Monitoring
    
 {
     public static  class MonitoringService
     {
-
-        public static ILogger Log => Serilog.Log.Logger;
-
-
         public static readonly string ServiceName = Assembly.GetCallingAssembly().GetName().Name ?? "Unknown";
 
         public static TracerProvider TracerProvider;
 
         public static ActivitySource ActivitySource = new ActivitySource(ServiceName);
 
+        public static ILogger Log => Serilog.Log.Logger;
 
         static MonitoringService()
         {
             //openTelemetry stuff
             TracerProvider = Sdk.CreateTracerProviderBuilder()
+                .SetSampler(new AlwaysOnSampler())
                 .AddConsoleExporter()
-                .AddZipkinExporter()
                 .AddSource(ActivitySource.Name)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName))
+                .AddZipkinExporter(config =>
+                config.Endpoint = new Uri("http://zipkin:9411/api/v2/spans"))
                 .Build();
 
             //Serilog stuff

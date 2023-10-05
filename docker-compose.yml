@@ -15,7 +15,7 @@ services:
   additionService:
     image: ${DOCKER_REGISTRY-}additionservice
     deploy:
-      replicas: 2
+      replicas: 3
     build:
         context:  .
         dockerfile: oblAdditionService/Dockerfile
@@ -25,7 +25,7 @@ services:
   subtractionService:
     image: ${DOCKER_REGISTRY-}subtractionservice
     deploy:
-      replicas: 2
+      replicas: 3
     build:
         context:  .
         dockerfile: oblSubtractionService/Dockerfile
