@@ -52,8 +52,13 @@ namespace MVCGui.Controllers
             var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber, null);
             Console.WriteLine("Subtracted " + leftNumber + " - " + rightNumber);
             String result = response.Result.Content.ReadAsStringAsync().Result;
-            
             Console.WriteLine(result + "subtraction RESULTED!!");
+            List<string> stringList = result.Split(',').ToList();
+            for (int i = 0; i < stringList.Count; i++)
+            {
+                stringList[i] = stringList[i].Trim().Trim('[', ']').Replace("\"", "");
+            }
+            ViewBag.calculationList = stringList;
             return View("Index");
         }
     }

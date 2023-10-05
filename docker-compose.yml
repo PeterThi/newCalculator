@@ -18,7 +18,7 @@ services:
         context:  .
         dockerfile: oblAdditionService/Dockerfile
     depends_on:
-        - additionDatabase
+        - historyService
   subtractionService:
     image: ${DOCKER_REGISTRY-}subtractionservice
     ports:
@@ -26,6 +26,18 @@ services:
     build:
         context:  .
         dockerfile: oblSubtractionService/Dockerfile
+    depends_on:
+        - additionDatabase
+  historyService:
+    image: ${DOCKER_REGISTRY-}historyservice
+    ports:
+    - "8100:80"
+    build:
+        context:  . 
+        dockerfile: oblHistoryService/Dockerfile
+    depends_on:
+        - additionDatabase
+
   additionDatabase:
     image: "mysql"
     environment: 

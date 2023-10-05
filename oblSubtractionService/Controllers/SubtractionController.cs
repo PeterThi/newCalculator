@@ -14,10 +14,18 @@ namespace oblSubtractionService.Controllers
         }
 
         [HttpPost]
-        public int PostSubtract(int leftNumber, int rightNumber)
+        public string Subtract(int leftNumber, int rightNumber)
         {
             Console.WriteLine("Subtraction serviced recieved request!");
-            return leftNumber - rightNumber;
+
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://historyService/History");
+
+            var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber + "&isAddition=" + false + "&result=" + (leftNumber - rightNumber), null);
+            Console.WriteLine("subtracted " + leftNumber + " + " + rightNumber);
+            string result = response.Result.Content.ReadAsStringAsync().Result;
+
+            return result;
 
         }
     }
