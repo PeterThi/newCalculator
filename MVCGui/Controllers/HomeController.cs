@@ -76,27 +76,45 @@ namespace MVCGui.Controllers
         [HttpPost]
         public IActionResult Subtract(int leftNumber, int rightNumber)
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("http://SubtractionService/Subtraction");
-
-            var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber, null);
-            Console.WriteLine("Subtracted " + leftNumber + " - " + rightNumber);
-            String result = response.Result.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(result + "subtraction RESULTED!!");
-
             //fault isolation
-            if (string.IsNullOrEmpty(result))
-            {
-                ViewBag.calculationList = leftNumber - rightNumber;
-                return View("Index");
-            }
+            var retryPolicy = Policy.Handle<HttpRequestException>()
+                .Retry(3, (exception, retryCount) =>
+                {
+                    Console.WriteLine("Retrying because MVCGui ran into" + exception.GetType().Name);
+                });
 
-            List<string> stringList = result.Split(',').ToList();
-            for (int i = 0; i < stringList.Count; i++)
+            var fallbackPolicy = Policy.Handle<HttpRequestException>()
+                .Fallback(() =>
+                {
+                    //if services cannot be reached, we complete the action ourselves.
+                    ViewBag.calculationList = leftNumber + rightNumber;
+
+                });
+            var policy = retryPolicy.Wrap(fallbackPolicy);
+
+            policy.Execute(() =>
             {
-                stringList[i] = stringList[i].Trim().Trim('[', ']').Replace("\"", "");
+                var client = new HttpClient();
+                client.BaseAddress = new Uri("http://SubtractionService/Subtraction");
+
+                var response = client.PostAsync(client.BaseAddress + "?leftNumber=" + leftNumber + "&rightNumber=" + rightNumber, null);
+                Console.WriteLine("Subtracted " + leftNumber + " - " + rightNumber);
+                String result = response.Result.Content.ReadAsStringAsync().Result;
+                Console.WriteLine(result + "subtraction RESULTED!!");
+
+
+                List<string> stringList = result.Split(',').ToList();
+                for (int i = 0; i < stringList.Count; i++)
+                {
+                    stringList[i] = stringList[i].Trim().Trim('[', ']').Replace("\"", "");
+                }
+                ViewBag.calculationList = stringList;
+            });
+
+            if (ViewBag.calculationList == null)
+            {
+                ViewBag.CalculationList = new List<String> { "something went wrong" };
             }
-            ViewBag.calculationList = stringList;
             return View("Index");
         }
     }
