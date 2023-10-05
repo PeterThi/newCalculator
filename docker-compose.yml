@@ -14,8 +14,8 @@ services:
     - "9000:80"
   additionService:
     image: ${DOCKER_REGISTRY-}additionservice
-    ports:
-    - "8090:80"
+    deploy:
+      replicas: 2
     build:
         context:  .
         dockerfile: oblAdditionService/Dockerfile
@@ -24,8 +24,8 @@ services:
         - seq
   subtractionService:
     image: ${DOCKER_REGISTRY-}subtractionservice
-    ports:
-    - "8080:80"
+    deploy:
+      replicas: 2
     build:
         context:  .
         dockerfile: oblSubtractionService/Dockerfile
@@ -49,7 +49,16 @@ services:
       MYSQL_USER: "add-bruger"
       MYSQL_PASSWORD: "C@ch3d1v2"
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-       
+  
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411 
+    depends_on:
+    - additionService
+    - mvcgui
+    - subtractionService
+    - additionDatabase
   seq:
     image: datalust/seq
     ports: 
@@ -60,5 +69,6 @@ services:
     environment:
         - ACCEPT_EULA=Y
 
+  
 volumes:
   rps_seq_data1:

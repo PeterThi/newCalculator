@@ -26,7 +26,10 @@ namespace MVCGui.Controllers
         [HttpPost]
         public IActionResult Add(int leftNumber, int rightNumber)
         {
+
             MonitoringService.Log.Information("started add process in HomeController with nums" + leftNumber + " + " + rightNumber);
+
+                
             //fault isolation
             var retryPolicy = Policy.Handle<HttpRequestException>()
                 .Retry(3, (exception, retryCount) =>
