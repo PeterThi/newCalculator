@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using MySqlConnector;
 using System.Data;
+using Monitoring;
+using Serilog;
 
 namespace oblHistoryService.Controllers
 {
@@ -23,6 +25,7 @@ namespace oblHistoryService.Controllers
         [HttpPost]
         public IEnumerable<string> Post(int leftNumber, int rightNumber, bool isAddition, int result)
         {
+            MonitoringService.Log.Debug("Started databaseConnection in historyService");
             addDatabaseConnection.Open();
             var tables = addDatabaseConnection.Query<string>("SHOW TABLES LIKE 'AllNumbers'");
             if (!tables.Any())

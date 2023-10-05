@@ -21,6 +21,7 @@ services:
         dockerfile: oblAdditionService/Dockerfile
     depends_on:
         - historyService
+        - seq
   subtractionService:
     image: ${DOCKER_REGISTRY-}subtractionservice
     ports:
@@ -30,6 +31,7 @@ services:
         dockerfile: oblSubtractionService/Dockerfile
     depends_on:
         - additionDatabase
+        - seq
   historyService:
     image: ${DOCKER_REGISTRY-}historyservice
     ports:
@@ -39,7 +41,7 @@ services:
         dockerfile: oblHistoryService/Dockerfile
     depends_on:
         - additionDatabase
-
+        - seq
   additionDatabase:
     image: "mysql"
     environment: 
@@ -48,3 +50,15 @@ services:
       MYSQL_PASSWORD: "C@ch3d1v2"
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
        
+  seq:
+    image: datalust/seq
+    ports: 
+        - "5341:5341"
+        - "5342:80"
+    volumes:
+        - rps_seq_data1:/data
+    environment:
+        - ACCEPT_EULA=Y
+
+volumes:
+  rps_seq_data1:

@@ -2,16 +2,16 @@
 using MVCGui.Models;
 using System.Diagnostics;
 using Polly;
+using Monitoring;
+using Serilog;
 
 namespace MVCGui.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
             
         }
 
@@ -26,6 +26,7 @@ namespace MVCGui.Controllers
         [HttpPost]
         public IActionResult Add(int leftNumber, int rightNumber)
         {
+            MonitoringService.Log.Information("started add process in HomeController with nums" + leftNumber + " + " + rightNumber);
             //fault isolation
             var retryPolicy = Policy.Handle<HttpRequestException>()
                 .Retry(3, (exception, retryCount) =>
@@ -70,7 +71,9 @@ namespace MVCGui.Controllers
             {
                 ViewBag.CalculationList = new List<String>{"something went wrong"};
             }
+            Log.CloseAndFlush();
             return View("Index");
+            
         }
 
         [HttpPost]

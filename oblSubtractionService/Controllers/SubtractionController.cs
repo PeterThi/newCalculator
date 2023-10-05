@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Polly;
-
+using Monitoring;
 namespace oblSubtractionService.Controllers
 {
     [ApiController]
@@ -17,6 +17,7 @@ namespace oblSubtractionService.Controllers
         [HttpPost]
         public string Subtract(int leftNumber, int rightNumber)
         {
+            MonitoringService.Log.Debug("Started subtraction in subtractionService");
             string result = leftNumber + " - " + rightNumber + " = " + (leftNumber - rightNumber);
             Console.WriteLine("Subtraction serviced recieved request!");
 
@@ -24,7 +25,7 @@ namespace oblSubtractionService.Controllers
                 .Fallback(() =>
                 {
                     //if database cannot be reached, just return the numbers added up.
-                    Console.WriteLine("Fell back, returning singular subtraction");
+                    MonitoringService.Log.Error("Exception caught, returning singular subtraction");
 
                 });
             fallbackPolicy.Execute(() =>
