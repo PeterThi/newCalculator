@@ -6,11 +6,6 @@ pipeline{
     }
     
     stages {
-        stage("Build"){
-            steps{
-                bat "docker compose up --build clearService"
-            }
-        }
         stage("MyDeliver"){
             steps{
                 withCredentials([usernamePassword(credentialsId: 'a7253184-e15f-4113-9993-13f5612ca541', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
@@ -18,5 +13,11 @@ pipeline{
                     bat "docker push easvdreter/clearService"
             }
         }
+        stage("Build"){
+            steps{
+                bat "docker compose up --build clearService"
+            }
+        }
+
     }
 }
