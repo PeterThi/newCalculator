@@ -8,7 +8,7 @@ pipeline{
     stages {
         stage("Build"){
             steps{
-                echo "Successfully built"
+                sh "docker compose up mvcgui"
             }
         }
     }

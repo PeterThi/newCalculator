@@ -33,12 +33,10 @@ services:
         - additionDatabase
         - seq
   clearService:
-    image: ${DOCKER_REGISTRY-}clearservice
+    image: easvdreter/clearservice:$BUILD_NUMBER
     build:
       context:  .
       dockerfile: ClearService/Dockerfile
-    depends_on:
-        - mvcgui
   historyService:
     image: ${DOCKER_REGISTRY-}historyservice
     ports:
