@@ -8,7 +8,7 @@ pipeline{
     stages {
         stage("Build"){
             steps{
-                bat "docker compose up --build clearservice"
+                bat "docker compose up --build clearService"
             }
         }
     }
