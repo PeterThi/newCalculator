@@ -33,7 +33,7 @@ services:
         - additionDatabase
         - seq
   clearService:
-    image: easvdreter/clearservice:$BUILD_NUMBER
+    image: easvdreter/clearservice
     build:
       context:  .
       dockerfile: ClearService/Dockerfile
