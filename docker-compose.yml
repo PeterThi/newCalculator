@@ -15,7 +15,7 @@ services:
   additionService:
     image: ${DOCKER_REGISTRY-}additionservice
     deploy:
-      replicas: 3
+      replicas: 1
     build:
         context:  .
         dockerfile: oblAdditionService/Dockerfile
@@ -25,13 +25,20 @@ services:
   subtractionService:
     image: ${DOCKER_REGISTRY-}subtractionservice
     deploy:
-      replicas: 3
+      replicas: 1
     build:
         context:  .
         dockerfile: oblSubtractionService/Dockerfile
     depends_on:
         - additionDatabase
         - seq
+  clearService:
+    image: ${DOCKER_REGISTRY-}clearservice
+    build:
+      context:  .
+      dockerfile: ClearService/Dockerfile
+    depends_on:
+        - mvcgui
   historyService:
     image: ${DOCKER_REGISTRY-}historyservice
     ports:

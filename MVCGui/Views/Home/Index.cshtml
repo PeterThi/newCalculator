@@ -31,6 +31,14 @@
         }
     </div>
 
+    <div>
+        @using (Html.BeginForm("Clear", "Home", FormMethod.Post))
+        {
+
+            <input type="submit" value="Clear" />
+        }
+    </div>
+
 
     <h2> calculations found in database</h2>
     <div>

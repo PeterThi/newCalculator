@@ -120,5 +120,20 @@ namespace MVCGui.Controllers
             }
             return View("Index");
         }
+
+        [HttpPost]
+        public IActionResult Clear()
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://ClearService/Clear");
+            
+            var response = client.GetAsync(client.BaseAddress);
+            String result = response.Result.Content.ReadAsStringAsync().Result;
+
+            ViewBag.CalculationList = result;
+
+            return View("Index");   
+        }
+
     }
 }
