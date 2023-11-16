@@ -27,7 +27,7 @@ namespace MVCGui.Controllers
         public IActionResult Add(int leftNumber, int rightNumber)
         {
             
-            MonitoringService.Log.Information("started add process in HomeController with nums" + leftNumber + " + " + rightNumber);
+            MonitoringService.Log.Information("clicked add and started add process in HomeController with nums" + leftNumber + " + " + rightNumber);
 
                 
             //fault isolation
