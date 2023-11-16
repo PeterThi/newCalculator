@@ -8,7 +8,7 @@ pipeline{
     stages {
         stage("Build"){
             steps{
-                sh "docker compose up mvcgui"
+                sh "docker compose build clearservice"
             }
         }
     }
