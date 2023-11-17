@@ -23,6 +23,10 @@ pipeline{
                   }
             }
         }
-
+        stage("Docker Swarm deployment"){
+            steps{
+                bat "docker stack deploy -c docker-compose.yml newcalculator"
+                }
+        }
     }
 }
