@@ -20,7 +20,7 @@ pipeline{
                     bat "docker push easvdreter/additionservice"
                     bat "docker push easvdreter/historyservice"
                     bat "docker push easvdreter/subtractionservice"
-                  }
+                  } 
             }
         }
         stage("Docker Swarm deployment"){
