@@ -56,5 +56,12 @@ namespace oblHistoryService.Controllers
             }
             return leftList;
         }
+
+        [HttpPut]
+        public string Put()
+        {
+            addDatabaseConnection.Query<string>("DROP TABLE AllNumbers");
+            return "cleared";
+        }
     }
 }

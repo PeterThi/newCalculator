@@ -11,7 +11,7 @@ services:
         - subtractionService
         - additionDatabase
     ports:
-    - "9000:80"
+    - "8182:80"
   additionService:
     image: ${DOCKER_REGISTRY-}additionservice
     deploy:
