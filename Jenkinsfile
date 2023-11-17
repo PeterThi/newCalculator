@@ -17,6 +17,9 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     bat 'docker login -u %USERNAME% -p %PASSWORD%'
                     bat "docker push easvdreter/clearservice"
+                    bat "docker push easvdreter/additionservice"
+                    bat "docker push easvdreter/historyservice"
+                    bat "docker push easvdreter/subtractionservice"
                   }
             }
         }
