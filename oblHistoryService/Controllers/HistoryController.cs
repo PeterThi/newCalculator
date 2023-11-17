@@ -4,6 +4,7 @@ using MySqlConnector;
 using System.Data;
 using Monitoring;
 using Serilog;
+using System.Diagnostics;
 
 namespace oblHistoryService.Controllers
 {
@@ -60,11 +61,14 @@ namespace oblHistoryService.Controllers
         [HttpPut]
         public string Put()
         {
+            MonitoringService.Log.Debug("cleared history");
             using (var activity = MonitoringService.ActivitySource.StartActivity())
             {
                 addDatabaseConnection.Query<string>("DROP TABLE AllNumbers");
                 return "cleared";
             }
+
+            
                 
         }
     }

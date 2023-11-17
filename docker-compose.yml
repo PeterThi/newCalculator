@@ -36,6 +36,8 @@ services:
     image: easvdreter/clearservice
     ports:
     - "8181:80" 
+    deploy:
+      replicas: 1
     build:
       context:  .
       dockerfile: ClearService/Dockerfile
