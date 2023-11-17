@@ -9,7 +9,7 @@ pipeline{
 
         stage("Build"){
             steps{
-                bat "docker compose up mvcgui"
+                bat "docker compose build"
             }
         }
         stage("MyDeliver"){
