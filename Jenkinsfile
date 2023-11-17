@@ -9,7 +9,7 @@ pipeline{
 
         stage("Build"){
             steps{
-                bat "docker compose up --build clearService"
+                bat "docker compose up clearService"
             }
         }
         stage("MyDeliver"){
