@@ -60,8 +60,12 @@ namespace oblHistoryService.Controllers
         [HttpPut]
         public string Put()
         {
-            addDatabaseConnection.Query<string>("DROP TABLE AllNumbers");
-            return "cleared";
+            using (var activity = MonitoringService.ActivitySource.StartActivity())
+            {
+                addDatabaseConnection.Query<string>("DROP TABLE AllNumbers");
+                return "cleared";
+            }
+                
         }
     }
 }
